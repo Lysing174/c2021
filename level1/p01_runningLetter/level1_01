@@ -1,0 +1,28 @@
+
+#include<string.h>
+#include<stdio.h>
+#include<math.h>
+#include<iostream>
+#include <stdlib.h>
+#include <windows.h>
+using namespace std;
+
+
+
+int main()
+{
+	int i,j=0,right=1;
+	while (1)
+	{
+		for (i = 0; i < j; i++)
+			printf(" ");
+		printf("a");
+		if(right)j++;
+		else j--;
+		if (j == 70)right = 0;
+		else if (j == -1)right = 1;
+		system("cls");
+	}
+	return 0;
+}
+
