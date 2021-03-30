@@ -1,0 +1,87 @@
+
+#include<windows.h>
+#include<stdio.h>
+
+struct node {
+	int d;
+	node *next;
+};
+
+node *buildnode(int l) {
+	node *h = (node *)malloc(sizeof(node));
+	node * p = h;
+	for (int i = 1; i < l; i++)
+	{
+		node *temp = (node *)malloc(sizeof(node));
+		temp->next = NULL;
+		p->next = temp;
+		p = temp;
+	}
+	return h;
+}
+
+void add(node *h, int n, int a)//插入节点函数
+{
+	node *temp = h;
+	node *pn = (node *)malloc(sizeof(node));
+	pn->d = a;
+	for (int i = 1; i < n; i++)
+	{
+		temp = temp->next;
+	}
+	node *p1 = temp->next;
+	temp->next = pn;
+	pn->next = p1;
+}
+
+int main()
+{
+	node *h = buildnode(10);
+	node *temp = h;
+	for (int i = 0; i < 10; i++)
+	{
+		temp->d = i;
+		temp = temp->next;
+	}
+	//遍历链表并赋值
+	
+	node *p = h;
+	temp = h->next;
+	h->next = NULL;
+	node *n = temp->next;
+	while (n!= NULL)
+	{
+		
+		temp->next = p;
+		p = temp;
+		temp = n;
+		n = n->next;
+	}
+	temp->next = p;
+	h = temp;
+	//反转链表
+	
+	temp = h;
+	int i = 0, ok = 0;;
+	while (1)
+	{
+		if (temp->d == 5)
+			if (!ok)
+			{
+				printf("第一个值为5的节点的序号：%d\n", i);
+				ok = 1;
+			}
+			else printf("第二个值为5的节点的序号：%d\n", i);
+		if (temp->next == NULL)
+		
+		{
+			printf("-1\n");
+			break;
+		}
+		temp = temp->next;
+		i++;
+	}
+	//查找两个值为5的节点的序号（第一节点序号为0）
+	return 0;
+}
+
