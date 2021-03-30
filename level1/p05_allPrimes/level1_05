@@ -1,0 +1,27 @@
+
+#include<time.h>
+#include<windows.h>
+#include<stdio.h>
+
+int main()
+{
+	int i, j;
+	long op, ed;
+	op = clock();
+	printf("2\n");
+	for (i = 3; i <= 1000; i += 2)
+	{
+		int ok = 1;
+		for (j = 3; j < 32; j++)
+			if (i%j == 0)
+			{
+				ok = 0;
+				break;
+			}
+		if (ok)printf("%d\n", i);
+	}
+	ed = clock();
+		printf("time=%.3fs\n", ((double)(ed - op)) / 1000.0);
+	return 0;
+}
+
