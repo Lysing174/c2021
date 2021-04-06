@@ -1,0 +1,40 @@
+#include<iostream>
+#include<string.h>
+#include<math.h>
+using namespace std;
+
+int t, n, a, b, m, ok;
+char s[100];
+
+void sec(char *p1, int l, int a)
+{
+
+	for (int i = 0; i < l; i++)
+	{
+
+		*p1 = ((*p1 + a) - 'a') % ('z' - 'a' + 1) + 'a';
+		p1++;
+	}
+}
+
+void unsec(char *p1, int l, int a)
+{
+	for (int i = 0; i < l; i++)
+	{
+		*p1 = *p1 - a - ((floor)((double)(*p1 - a - 'a') / 26.0)) * 26;
+		p1++;
+	}
+}
+
+int main()
+{
+	cout << "输入正整数a和字符串s（加密方式为将s每一位字符按字母表顺序向右移动a位）:\n";
+	cin >>a>> s;
+	char *p = s;
+	int l = strlen(s);
+	sec(p, l, a);
+	cout << "加密后为：" << s<<"\n";
+	unsec(p, l, a);
+	cout << "解密后为："<<s<<"\n";
+	return 0;
+}
