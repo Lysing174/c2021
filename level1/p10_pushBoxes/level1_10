@@ -1,0 +1,133 @@
+#include <iostream>
+#include<stdio.h>
+#include<algorithm>
+#include<math.h>
+#include<string.h>
+#include<conio.h>
+#include<fstream>
+
+using namespace std;
+
+int  dir[5][2] = { 0,-1,-1,0,1,0,0,0,0,1 },book[50],po[50][50];
+char maze[50][50];
+int swc(int i)
+{
+	return (i - 70) / 2-1;
+}
+
+
+
+
+int main()
+{
+	int n=10, m, q,x, y, level, len, t;
+	printf("choose levels:");
+	cin >> level;
+	memset(book, 0, sizeof(book));
+	memset(po, 0, sizeof(po));
+	ifstream myfl("C:\\Users\\admin\\source\\repos\\Project1\\Project1\\levels.txt");
+	if (!myfl.is_open())cout << "error";
+	char c;
+	while (1)
+	{
+		myfl >> c;
+		if (c == '0' + level)break;
+	}
+	int num = 0;
+	for(int i=0;i<n;i++)
+		for (int j = 0; j < n; j++)
+		{
+			
+			myfl >> maze[i][j];
+			if (maze[i][j] == '\n')myfl >> maze[i][j];
+			if (maze[i][j] == 'O') { x = j; y = i; }
+			if (maze[i][j] == '.') { book[num] = i * 10 + j; num++; po[i][j] = 1; }
+		}
+	system("cls");
+	int point = 0;
+	while (1)
+	{
+		printf("level %d\nstep:%d\n",level,point);
+		
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < n; j++)
+				printf("%c", maze[i][j]);
+			printf("\n");
+		}
+
+		int ok = 1;
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < n; j++)
+				if (po[i][j] == 1 & maze[i][j] != '@')ok = 0;
+		if ( ok) { cout << "you win:D\n"; break; }//win
+		
+		int k = getch();
+		if (k < 81)
+		{
+			if (dir[swc(k)][0] + x<n&dir[swc(k)][0] + x>-1 & dir[swc(k)][1] + y<n&dir[swc(k)][1] + y>-1 & maze[dir[swc(k)][1] + y][dir[swc(k)][0] + x] != '*')
+			{
+				if (maze[dir[swc(k)][1] + y][dir[swc(k)][0] + x] == '@')
+				{
+					if (maze[2 * dir[swc(k)][1] + y][2 * dir[swc(k)][0] + x] != '*'&maze[2 * dir[swc(k)][1] + y][2 * dir[swc(k)][0] + x] != '@')
+					{
+						if (po[y][x])maze[y][x] = '.';
+						else maze[y][x] = '+';
+						x = dir[swc(k)][0] + x;
+						y = dir[swc(k)][1] + y;
+						maze[y][x] = 'O';
+						if (maze[dir[swc(k)][1] + y][dir[swc(k)][0] + x] == '.')book[--num] = 0;
+						maze[dir[swc(k)][1] + y][dir[swc(k)][0] + x] = '@';
+						point++;
+					}
+				}
+				else {
+					if (po[y][x])
+					{
+						maze[y][x] = '.'; 
+					}
+					else maze[y][x] = '+';
+					x = dir[swc(k)][0] + x;
+					y = dir[swc(k)][1] + y;
+					point++;
+					maze[y][x] = 'O';
+				}
+			}
+		}
+		system("cls");
+		
+	}
+	
+	
+	
+	return 0;
+}
+
+
+/*
+levels:
+
+1
+**********
+*+O++++++*
+*++++++@+*
+*++++++++*
+*++++++++*
+*++++++.+*
+*++++++++*
+*++++++++*
+*++++++++*
+**********
+2
+**********
+**********
+**********
+*****++***
+*****@+++*
+*++++..*+*
+*O++@+.@+*
+*****++***
+*****++***
+**********
+
+*/
