@@ -25,7 +25,7 @@ int main()
 	cin >> level;
 	memset(book, 0, sizeof(book));
 	memset(po, 0, sizeof(po));
-	ifstream myfl("C:\\Users\\admin\\source\\repos\\Project1\\Project1\\levels.txt");
+	ifstream myfl("levels.txt");
 	if (!myfl.is_open())cout << "error";
 	char c;
 	while (1)
