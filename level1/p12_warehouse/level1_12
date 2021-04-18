@@ -1,0 +1,113 @@
+#include<iostream>
+#include <string.h>
+#include<math.h>
+#include<algorithm>
+#include<fstream>
+using namespace  std;
+
+int n, t,pat=0,L,l;
+char vd = '\b';
+
+struct str {
+	char name[100];
+	int amount;
+};
+str s[10000];
+
+void updata(FILE* p)
+{
+	char temps[100];
+	int tempn;
+	cout << "请输入货物型号：";
+	cin >> temps;
+	cout << "货物数量：";
+	cin >> tempn;
+	if (pat == 3)tempn = -tempn;
+	int ok = 0;
+	for(int i=0;i<l;i++)
+	{
+		if (strcmp(s[i].name, temps) == 0)
+		{
+			ok = 1;
+			if (s[i].amount + tempn<0)cout << "出库失败（" << s[i].name << "只有" << s[i].amount<< "个）\n";
+			else
+			{
+				if (s[i].amount + tempn == 0)
+				{
+					for (int j = i; j < l; j++)
+						s[j] = s[j + 1];
+					l--;
+				}
+				else
+				s[i].amount += tempn;
+				cout << "出库成功\n";
+			}
+			break;
+		}
+	}
+	if (!ok)
+	{
+		if (pat == 3)cout << "出库失败（仓库中无" << temps << ")\n";
+		else
+		{
+			strcpy(s[l].name, temps);
+			s[l].amount = tempn;
+			l++;
+			cout << "入库成功\n";
+		}
+	}
+	return;
+}
+
+int iarry(FILE* p)
+{
+	int i = 0;
+	while (fscanf(p, "%s %d", s[i].name, &s[i].amount) != EOF)
+	{
+		i++;
+
+	}
+	return i;
+}
+
+void ifile(FILE *p)
+{
+	fseek(p, 0, SEEK_SET);
+	for (int i = 0; i < l; i++)
+		fprintf(p, "%s %d\n", s[i].name, s[i].amount);
+}
+int main()
+{
+	
+	while (1)
+	{
+		
+		cout << "菜单：\n  1.显示存货列表\n  2.入库\n  3.出库\n  4.退出程序\n";
+		
+		
+		FILE *p = fopen("warehouse.txt","r+");
+		 l = iarry(p);
+		 L = l;
+		if (pat == 4)break;
+		else if (pat == 1)
+		{
+			cout << "货物型号\t货物数量\n";
+			for(int i=0;i<l;i++)
+			{
+				
+				cout << s[i].name <<"\t\t"<< s[i].amount << endl;
+			}
+		}
+		else if(pat!=0)
+		{
+			updata(p);
+		}
+		fclose(p);
+		p = fopen("warehouse.txt", "w+");
+		ifile(p);
+		fclose(p);
+		cin >> pat;
+		system("cls");
+	}
+	return 0;
+}
